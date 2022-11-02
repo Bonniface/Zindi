@@ -1,6 +1,22 @@
 ```{r}
 Blogs <- read.csv("../Data/Blogs.csv")
 Comments <- read.csv("../Data/Comments.csv")
-CompetitionPartipation <-  read.csv("../Data/CompetitionPartipation.csv")
+CompetitionPartipation <- read.csv("../Data/CompetitionPartipation.csv")
+Discussion <- read.csv("../Data/Discussion.csv")
+Jobs <- read.csv("../Data/Jobs.csv")
+UserActivity <- read.csv("../Data/UserActivity.csv")
+Users <- read.csv("../Data/Users.csv")
+VariableDefinitions <- read.csv("../Data/VariableDefinitions.csv")
+SampleSubmission <- read.csv("../Data/SampleSubmission.csv")
 ```
 
+# First look at our dataset
+
+In this notebook, we will look at the necessary steps required before
+any machine learning takes place. It involves:
+
+loading all the data; looking at the variables in the dataset, in
+particular, differentiate between numerical and categorical variables,
+which need different preprocessing in most machine learning workflows;
+visualizing the distribution of the variables to gain some insights into
+the dataset.
