@@ -1,0 +1,6 @@
+```{r}
+Blogs <- read.csv("../Data/Blogs.csv")
+Comments <- read.csv("../Data/Comments.csv")
+CompetitionPartipation <-  read.csv("../Data/CompetitionPartipation.csv")
+```
+

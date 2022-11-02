@@ -5,26 +5,163 @@ date: "2022-10-16"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE,warning=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+# Import Data
+```{r}
+library(readr)
+Train <- read_csv("../Data/Train.csv")
+Test <- read_csv("../Data/Test.csv")
+VariableDefinitions <- read_csv("../Data/VariableDefinitions.csv")
+SampleSubmission <- read_csv("../Data/SampleSubmission.csv")
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+head(Train)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+dim(Train)
+```
+```{r}
+VariableDefinitions
+```
+## Data Understanding
+Data understanding involves the exploration of data that includes the use 
+of statistics and data visualizations. Descriptive statistics can be used to 
+summarize the data, inferential statistics can be used to test two data sets 
+and samples, and regressions can be used to explore the relationships 
+between multiple variables. Data visualizations use charts, graphs, and 
+dashboards to understand the data. This phase allows you to understand 
+the quality of data.
+```{r}
+colnames(Train)
+```
+```{r}
+
+```
+
+```{r}
+library(psych)
+glimpse(Train)
+```
+```{r}
+library(explore)
+explore(Train)
+```
+
+```{r}
+skimr::skim(Train)
+```
+```{r}
+library(ggplot2)
+ggplot(Train, aes(x = class, colour = class)) +
+  geom_linerange(aes(ymin = 	mig_year, ymax = 	mig_year)) +
+  geom_point(aes(y = 	mig_year)) +
+  # geom_point(aes(y = .to)) +
+  coord_flip() +
+  theme(legend.position = "bottom")
+```
+
+## Data Preparation
+Data preparation is one of the most important and time-consuming 
+phases and can include selecting a sample subset or variables selection, 
+imputing missing values, transforming attributes or variables including 
+log transform and feature scaling transformation, and duplicates removal. 
+Variables selection can be done with a correlation matrix in a data 
+visualization.
+```{r, warning=FALSE,message=FALSE}
+library(rsample)
+library(caret)
+library(workflows)
+library(recipes)
+library(parsnip)
+```
+`initial_split` creates a single binary split of the data into a training set and testing set. `initial_time_split` does the same, but takes the first `prop` samples for training, instead of a random selection. `group_initial_split` creates splits of the data based on some grouping variable, so that all data in a "group" is assigned to the same split. `training `and `testing `are used to extract the resulting data.
+```{r}
+Split <- initial_split(Train,prop = 0.7,strata = income_above_limit)
+TrainingSet<- training(Split)
+TestingSet <- testing(Split)
+```
+Once a recipe is defined, it needs to be estimated before being applied to data. Most recipe steps have specific quantities that must be calculated or estimated. For example, `step_normalize() `needs to compute the training set’s mean for the selected columns, while `step_dummy() `needs to determine the factor levels of selected columns in order to make the appropriate indicator columns.
+
+The two most common application of recipes are modeling and stand-alone preprocessing. How the recipe is estimated depends on how it is being used.
+
+Modeling
+```{r}
+recipes <- recipe(income_above_limit~.,data = TrainingSet)%>%
+  step_impute_knn(all_nominal_predictors(), neighbors = 3)%>%
+    step_normalize(all_predictors()) %>%
+  step_dummy(all_nominal(),-all_outcomes())%>%
+  step_range(all_predictors(),-all_nominal(),max = 
+               1,min = 0)
+```
+Note that the data passed to recipe() need not be the complete data that will be used to train the steps (by prep()). The recipe only needs to know the names and types of data that will be used. For large data sets, head() could be used to pass a smaller data set to save time and memory.
+```{r}
+TraingSet <- recipes%>%
+  prep(TrainingSet)%>%
+  bake(TrainingSet)
+TestingSet <- recipes%>%
+  prep(TrainingSet)%>%
+  bake(TrainingSet)
+```
+
+## Modeling
+Modeling usually means the development of a prediction model to predict 
+a variable in data. The prediction model can be developed using regression 
+algorithms, statistical learning algorithms, and machine learning 
+algorithms like neural networks, support vector machines, naïve Bayes, 
+multiple linear regressions, decision trees, and more. You can also build 
+prescriptive and descriptive models.
+```{r}
+decision_tree_rpart_spec <-
+  decision_tree(tree_depth = tune(), min_n = tune(), cost_complexity = tune()) %>%
+  set_engine('rpart') %>%
+  set_mode('classification')
+
+logistic_reg_glm_spec <-
+  logistic_reg() %>%
+  set_engine('glm')
+
+mlp_keras_spec <-
+  mlp(hidden_units = tune(), penalty = tune(), dropout = tune(), epochs = tune(), activation = tune()) %>%
+  set_engine('keras') %>%
+  set_mode('classification')
+
+naive_Bayes_naivebayes_spec <-
+  naive_Bayes(smoothness = tune(), Laplace = tune()) %>%
+  set_engine('naivebayes')
+
+rand_forest_randomForest_spec <-
+  rand_forest(mtry = tune(), min_n = tune()) %>%
+  set_engine('randomForest') %>%
+  set_mode('classification')
+
+
+```
+
+j
+```{r}
+decision_tree_rpart_spec <-fit(decision_tree_rpart_spec,income_above_limit~.,data = TrainingSet)
+logistic_reg_glm_spec <- fit(logistic_reg_glm_spec,income_above_limit~.,data = TrainingSet)
+mlp_keras_spec <- fit(mlp_keras_spec,income_above_limit~.,data = TrainingSet)
+naive_Bayes_naivebayes_spec <- fit(naive_Bayes_naivebayes_spec,income_above_limit~.,data = TrainingSet)
+rand_forest_randomForest_spec <- fit(rand_forest_randomForest_spec,income_above_limit~.,data = TrainingSet)
+```
+
+## Evaluation
+Evaluation is one of the phases where you may use ten-fold crossover 
+validation techniques to evaluate the precision and recall of your model. 
+You may improve your model accuracy by moving back to the previous 
+phase to improve or prepare your data more. You may also select the most 
+accurate model for your requirements. You may also evaluate the model 
+using the business success criteria established in the beginning stage, 
+which is the business understanding stage.
+## Deployment
+Deployment is the process of using new insights and knowledge to 
+improve your organization or make changes to improve your organization. 
+You may use your prediction model to create a data product or to produce 
+a final report based on your models.

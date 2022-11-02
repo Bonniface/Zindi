@@ -1,0 +1,95 @@
+VariableName,VariableDefinition
+,
+SampleSubmission,
+User_ID_Next_month_Activity,Represent the UserID-theNextMonth
+,
+Comments,
+Disc_ID,Unique ID for each discussion
+User_ID,This is the unique ID of the user who made the comment
+Created At time,The time of day the comment was made on
+Created At Year,The year the comment was made in. Years are in chronological order
+Created At Month,The month of the year the comment was made in. Months are in chronological order but January is not neccesarily month 1.
+Created At Day_of_month,The day of the month the comment was made on. 
+,
+Competitions,
+Country_ID,Country competition host is from or where hackathon is being hosted. This field is masked in the same way Country is masked in the User table.
+FeatureA,A category the competition falls into. This field is masked.
+Comp_ID,This is the ID of the competition or hackathon
+FeatureB,A category the competition falls into. This field is masked.
+FeatureC,A category the competition falls into. This field is masked.
+Kind,This indicates if the competition is a hackathon or competition
+Points Reward,"This is the points award for the competition or hackathon, please note that these values have been scaled. "
+FeatureD,A category the competition falls into. This field is masked.
+SecretCode,Indicates if a hackathon has a secret code
+SubmissionLimitPerDay,Number of submissions per day limit per competition
+FeatureE,A category the competition falls into. This field is masked.
+FeatureF,A category the competition falls into. This field is masked.
+FeatureG,A category the competition falls into. This field is masked.
+FeatureH,A category the competition falls into. This field is masked.
+FeatureI,A category the competition falls into. This field is masked.
+End Time time,Time of the day the competition ended
+End Time Year,The year the competition ended in. Years are in chronological order
+End Time Month,The month of the year the competition ended in. Months are in chronological order but January is not neccesarily month 1.
+End Time Day_of_month,The day of the month the competition ended on.
+Start Time time,Time of the day the competition started
+Start Time Year,The year the competition started in. Years are in chronological order
+Start Time Month,The month of the year the competition started in. Months are in chronological order but January is not neccesarily month 1.
+Start Time Day_of_month,The day of the month the competition started on. 
+,
+CompetitionParticipation,
+Competition ID,Competition ID the user enrolled in
+Participant Type,If the entry is a user or a team
+Successful Submission Count,This variable is split into groups. Number of submissions are grouped in groups of 10. Count 3 does not neccesarily mean that users with count 3 made 30-40 submissions. This field is masked.
+User_ID,This is the unique ID of the user who enrolled in a specific CompID
+Created At time,Time of the day the user enrolled in the competition
+Created At Year,The year the user enrolled in the competition. Years are in chronological order
+Created At Month,The month of the year the user enrolled in a competition. Months are in chronological order but January is not neccesarily month 1.
+Created At Day_of_month,The day of the month the user enrolled in a competition on. 
+,
+Discussions,
+Disc_ID,"The unique ID for each discussion, the comments table can be merged on this feature"
+User_ID,"The user who created the discussion, this can be merged with the User table on UserID"
+Created At time,Time of the day the discussion was made. 
+Created At Year,The year the discussion was created. Years are in chronological order
+Created At Month,The month of the year the discussion was made in. Months are in chronological order but January is not neccesarily month 1.
+Created At Day_of_month,The day of the month the discussion was made on. 
+,
+Users,
+FeatureX,A category the user falls into. This field is masked.
+Country_ID,Country user is from. This field is masked in the same way Country is masked in the Competition table.
+User_ID,"Unique user ID, this feature can be used to merge onto the discussion, comments and submission table"
+Created At Year,The year the user signed up for Zindi. Years are in chronological order
+Created At Month,The month of the year the user signed up. Months are in chronological order but January is not neccesarily month 1.
+Created At Day_of_month,The day of the month the user signed up on. 
+,
+Blog,
+Theme,Masked theme the blog post falls into 
+blog_ID,Unique ID to identify each blog post
+Published At time,Time of the day the blog post was published on
+Published At Year,The year the blog post was published on
+Published At Month,The month the blog post was published on
+Published At Day_of_month,The day of the month the blog post was published on
+,
+Jobs,
+Remote,If the job opportunity is remote or not
+Experience,Number of years experience needed
+Employment Type,"If employment opportunity is permanent, contract, etc"
+Company Size,Size of the company
+Data Science Functions,Data science requirements needed for the job
+job_ID,Unique ID for each job
+Publish Time time,Time of the day the job was published on
+Publish Time Year,The year the job was published on
+Publish Time Month,The month the job was published on
+Publish Time Day_of_month,The day of the month the job was published on
+,
+UserActivity,
+User_ID,Unique ID for each user
+Title,The activity the user completed such as viewing a competition or job
+datetime time,Time of the day the user completed the action
+datetime Year,Year the user completed the action
+datetime Month,Month the day the user completed the action
+datetime Day_of_month,Day of the month the user completed the action
+,
+,
+,
+All times are in GMT,
