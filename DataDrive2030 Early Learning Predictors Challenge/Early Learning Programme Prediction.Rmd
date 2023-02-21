@@ -1,0 +1,20 @@
+---
+title: "Identify which features of an early learning programme predict better learning outcomes for children"
+author: "BonnyFace Kalong"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r}
+Train <-read.csv("./DataSet/Train.csv")
+Test <- read.csv("./DataSet/Test.csv")
+VDescription <- read.csv("./DataSet/VariableDescription.csv")
+VDescription
+```
+```{r}
+skimr::skim(Train)
+```
+```{r}
+
+```
+
